@@ -95,7 +95,7 @@ public class Main {
 		
 		System.out.println("\n___________________\n");
 		
-		System.out.println("Dernières valeurs et date associée quand c'est possible : \n");
+		System.out.println("Derniï¿½res valeurs et date associï¿½e quand c'est possible : \n");
 		System.out.println(google + " le " + google.getDerDate() + " : " + google.getDerValeur() );
 		
 		try{
@@ -121,9 +121,12 @@ public class Main {
 			int mois = debCal.get(Calendar.MONTH)+1;
 			int annee = debCal.get(Calendar.YEAR);
 			Date uneDate = new Date(jour, mois, annee);
-			System.out.println(uneDate + " : " + apple.getValeur(uneDate) + "€");
+			System.out.println(uneDate + " : " + apple.getValeur(uneDate) + "ï¿½");
 			debCal.add(Calendar.MONTH, 1);
 		}
+                
+//              TEST MODIFICATION DAVID
+                
 
 	}
 
