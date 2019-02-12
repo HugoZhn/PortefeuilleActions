@@ -114,7 +114,7 @@ public class Main {
             int mois = debCal.get(Calendar.MONTH) + 1;
             int annee = debCal.get(Calendar.YEAR);
             Date uneDate = new Date(jour, mois, annee);
-            System.out.println(uneDate + " : " + apple.getValeur(uneDate) + "�");
+            System.out.println(uneDate + " : " + apple.getValeur(uneDate) + "€");
             debCal.add(Calendar.MONTH, 1);
         }
     }
