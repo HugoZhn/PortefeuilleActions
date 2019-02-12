@@ -27,14 +27,20 @@ public class Date {
     public int getToInt() {
         return this.toInt;
     }
-
+     
     public static Date fromInt(int i) {
-        int year = i / 10000;
-        i -= year;
+       
+        if(i==0){
+            return null; 
+        }else{
+          int year = i / 10000;
+        i -= year*10000;
         int month = i / 100;
-        i -= month;
+        i -= month*100;
         Date retour = new Date(i, month, year);
-        return retour;
+        return retour;  
+        }
+        
     }
 
     @Override

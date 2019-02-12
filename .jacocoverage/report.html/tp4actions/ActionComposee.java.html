@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ActionComposee.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;PortefeuilleActions&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">tp4actions</a> &gt; <span class="el_source">ActionComposee.java</span></div><h1>ActionComposee.java</h1><pre class="source lang-java linenums">package tp4actions;
+
+import java.util.HashMap;
+
+public class ActionComposee extends Action {
+
+    private HashMap&lt;ActionSimple, Double&gt; actions;
+
+    // Constructeurs
+<span class="nc" id="L10">    public ActionComposee(String lib) {</span>
+<span class="nc" id="L11">        this.libelle = lib;</span>
+<span class="nc" id="L12">        this.actions = new HashMap&lt;ActionSimple, Double&gt;();</span>
+<span class="nc" id="L13">    }</span>
+
+<span class="nc" id="L15">    public ActionComposee(String lib, HashMap&lt;ActionSimple, Double&gt; actions) {</span>
+<span class="nc" id="L16">        this.libelle = lib;</span>
+<span class="nc" id="L17">        this.actions = actions;</span>
+<span class="nc" id="L18">    }</span>
+
+    // Getters
+    public String getLibelle() {
+<span class="nc" id="L22">        return this.libelle;</span>
+    }
+
+    public HashMap&lt;ActionSimple, Double&gt; getActions() {
+<span class="nc" id="L26">        return this.actions;</span>
+    }
+
+    // Permet de supprimer une action de l'action compos�e
+    public void remove(ActionSimple a) {
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (this.actions.containsKey(a)) {</span>
+<span class="nc" id="L32">            this.actions.remove(a);</span>
+        }
+<span class="nc" id="L34">    }</span>
+
+    // Indique si l'action est compos�e � moins de 100%
+    private boolean inf100() {
+<span class="nc" id="L38">        double sum = 0;</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        for (Double perc : this.actions.values()) {</span>
+<span class="nc" id="L40">            sum += perc;</span>
+<span class="nc" id="L41">        }</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        return sum &lt; 1;</span>
+    }
+
+    // Indique si l'action compos�e + le pourcentage d'ajout d�passe 100%
+    private boolean sup100(double addedPerc) {
+<span class="nc" id="L47">        double sum = 0;</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        for (Double perc : this.actions.values()) {</span>
+<span class="nc" id="L49">            sum += perc;</span>
+<span class="nc" id="L50">        }</span>
+<span class="nc" id="L51">        sum += addedPerc;</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        return sum &gt; 1;</span>
+    }
+
+    // Permet d'ajouter/modifier le pourcentage d'une action dans la composition
+    public void add(ActionSimple a, double pourc) throws ExceptionActionComposee {
+        // Le pourcentage doit �tre entre 0 et 1 sinon on l�ve une erreur
+<span class="nc bnc" id="L58" title="All 4 branches missed.">        if (pourc &gt; 0 &amp;&amp; pourc &lt; 1) {</span>
+
+            // Si l'action compos�e ne contient pas d�j� l'action 
+            // et l'ajout du pourcentage de la nouvelle action ne d�passe pas 100% on l'ajoute sinon on l�ve une erreur
+<span class="nc bnc" id="L62" title="All 2 branches missed.">            if (!this.actions.containsKey(a)) {</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                if (!this.sup100(pourc)) {</span>
+<span class="nc" id="L64">                    this.actions.put(a, pourc);</span>
+                } else {
+<span class="nc" id="L66">                    throw new ExceptionActionComposee(1);</span>
+                }
+            } // Si l'action compos�e contient d�j� l'action 
+            // et l'ajout du pourcentage de cette action ne d�passe pas 100% on l'ajoute sinon on l�ve une erreur
+            else {
+<span class="nc bnc" id="L71" title="All 2 branches missed.">                if (!this.sup100(this.actions.get(a) + pourc)) {</span>
+<span class="nc" id="L72">                    this.actions.put(a, pourc);</span>
+                } else {
+<span class="nc" id="L74">                    throw new ExceptionActionComposee(1);</span>
+                }
+            }
+        } else {
+<span class="nc" id="L78">            throw new ExceptionActionComposee(2);</span>
+        }
+<span class="nc" id="L80">    }</span>
+
+    // Renvoie la valeur de l'action un jour donn�e si l'action est compos�e � 100%
+    @Override
+    public double getValeur(Date d) throws ExceptionActionComposee {
+<span class="nc" id="L85">        double val = 0;</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (!this.inf100()) {</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">            for (ActionSimple key : this.actions.keySet()) {</span>
+<span class="nc" id="L88">                val += key.getValeur(d) * this.actions.get(key);</span>
+<span class="nc" id="L89">            }</span>
+        } else {
+<span class="nc" id="L91">            throw new ExceptionActionComposee(3);</span>
+        }
+<span class="nc" id="L93">        return val;</span>
+    }
+
+    // Renvoie la valeur de l'action du dernier jour si l'action est compos�e � 100%
+    public double getDerValeur() throws ExceptionActionComposee {
+<span class="nc" id="L98">        double val = 0;</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (!this.inf100()) {</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            for (ActionSimple key : this.actions.keySet()) {</span>
+<span class="nc" id="L101">                val += key.getDerValeur() * this.actions.get(key);</span>
+<span class="nc" id="L102">            }</span>
+        } else {
+<span class="nc" id="L104">            throw new ExceptionActionComposee(3);</span>
+        }
+<span class="nc" id="L106">        return val;</span>
+    }
+
+    public String toString() {
+<span class="nc" id="L110">        String ret = &quot;Action composée '&quot; + this.libelle + &quot;' : [ &quot;;</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        for (Action key : this.actions.keySet()) {</span>
+<span class="nc" id="L112">            ret += key.toString() + &quot; (&quot; + this.actions.get(key) * 100 + &quot;%), &quot;;</span>
+<span class="nc" id="L113">        }</span>
+<span class="nc" id="L114">        ret = ret.substring(0, ret.length() - 2);</span>
+<span class="nc" id="L115">        ret += &quot;]&quot;;</span>
+<span class="nc" id="L116">        return ret;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
